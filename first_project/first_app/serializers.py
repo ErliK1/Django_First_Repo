@@ -15,16 +15,29 @@ class CourseSerializerGet(serializers.ModelSerializer):
         fields = '__all__'
 
 
-    def to_internal_value(self, data):
-        validated = {
-            'course_id': self.data.get('course_id'),
-            'course_name': self.data.get('course_name'),
-            'student': self.data.get('student')['student_username']
-        }
-
-        return validated
+    # def to_internal_value(self, data):
+    #     validated = {
+    #         'course_id': self.data.get('course_id'),
+    #         'course_name': self.data.get('course_name'),
+    #         'student': self.data.get('student')['student_username']
+    #     }
+    #
+    #     return validated
 
 class CourseSerializerCreate(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+class CourseSerializerRetrieve(serializers.ModelSerializer):
+
+    student = StudentSerializer(Student.objects.all(), many=True)
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+class CourseSerializerUpdater(serializers.ModelSerializer):
+
     class Meta:
         model = Course
         fields = '__all__'

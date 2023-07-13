@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Student, Course
-from .serializers import StudentSerializer, CourseSerializerGet, CourseSerializerCreate
+from .serializers import StudentSerializer, CourseSerializerGet, CourseSerializerCreate, CourseSerializerRetrieve
 from rest_framework import generics
 
 
@@ -43,3 +43,12 @@ class CourseCreate(generics.ListCreateAPIView):
 class CourseDestroyer(generics.DestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializerGet
+
+class CourseRetrieve(generics.RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializerRetrieve
+
+class CourseUpdate(generics.UpdateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = Cour
+
