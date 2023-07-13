@@ -5,65 +5,41 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Student, Course
-from .serializers import StudentSerializer, CourseSerializer
+from .serializers import StudentSerializer, CourseSerializerGet, CourseSerializerCreate
 from rest_framework import generics
 
 
 # Create your views here.
 
-class StudentList(APIView):
+class StudentList(generics.ListCreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
-    def get(self, request):
-        students = Student.objects.all()
-        serializer = StudentSerializer(Student.objects.all(), many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        student_serializer = StudentSerializer(data=request.data)
-        if student_serializer.is_valid():
-            student_serializer.save()
-            return Response(student_serializer.data, status=status.HTTP_200_OK)
-        return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
 
 
-class StudentSpecific(APIView):
+class StudentSpecific(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
-    def get_object(self, pk):
-        try:
-            return Student.objects.get(pk=pk)
-        except Student.DoesNotExist:
-            raise Http404
 
-    def get(self, request, pk):
-        student = self.get_object(pk)
-        student_serializer = StudentSerializer(student)
-        return Response(student_serializer.data)
+class CourseList(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializerGet
 
-    def put(self, request, pk):
-        student_serializer = StudentSerializer(self.get_object(pk), data=request.data)
-        if student_serializer.is_valid():
-            student_serializer.save()
-            return Response(student_serializer.data, status=status.HTTP_200_OK)
-        return Response(student_serializer.errors, status=status.HTTP_404_NOT_FOUND)
+    def list(self, request, *args, **kwargs):
+        courses = Course.objects.all()
+        course_serializer = CourseSerializerGet(courses, many=True)
+        return Response(course_serializer.data)
 
-    def delete(self, request, pk):
-        student: Student = self.get_object(pk)
-        student.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def patch(self, request, pk):
-        student = self.get_object(pk)
-        student_serializer = StudentSerializer(student, data=request.data, partial=True)
-        if student_serializer.is_valid():
-            student_serializer.save()
-            return Response(student_serializer.data, status=status.HTTP_200_OK)
-        return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class CourseCreate(generics.ListCreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializerCreate
 
 
 
 
-
-
-
-
-
+class CourseDestroyer(generics.DestroyAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializerGet
