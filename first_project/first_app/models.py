@@ -21,3 +21,11 @@ class Course(models.Model):
 
 
 
+class Professor(models.Model):
+    professor_name = models.CharField(max_length=200)
+    professor_email = models.EmailField(max_length=100)
+    professor_password = models.CharField(max_length=100)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.professor_name)

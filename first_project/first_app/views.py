@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Student, Course
-from .serializers import StudentSerializer, CourseSerializerGet, CourseSerializerCreate, CourseSerializerRetrieve
+from .models import Student, Course, Professor
+from .serializers import StudentSerializer, CourseSerializerGet, CourseSerializerCreate, CourseSerializerRetrieve, ProfessorSerializerGet, ProfessorSerializerCreate, ProfessorCourseSerializerCreate
 from rest_framework import generics
 
 
@@ -48,7 +48,35 @@ class CourseRetrieve(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializerRetrieve
 
-class CourseUpdate(generics.UpdateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = Cour
+# class CourseUpdate(generics.UpdateAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class =
+
+
+class ProfessorList(generics.ListAPIView):
+    queryset = Professor.objects.all()
+    serializer_class = ProfessorSerializerGet
+
+class ProfessorCreate(generics.CreateAPIView):
+    queryset = Professor.objects.all()
+    serializer_class = ProfessorSerializerCreate
+
+class ProfessorCourseCreate(generics.CreateAPIView):
+    queryset = Professor.objects.all()
+    serializer_class = ProfessorCourseSerializerCreate
+
+    def create(self, request, *args, **kwargs):
+        professor_serializer = ProfessorSerializerCreate(data=request.data)
+        if professor_serializer.is_valid():
+            course_ordered_data = professor_serializer.validated_data['course']
+            course_serializer = CourseSerializerCreate(data=course_ordered_data)
+            if course_serializer.is_valid():
+                course_serializer.save()
+            else:
+                return Response(course_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            professor_serializer.validated_data['course'] = course_serializer
+            professor_serializer.save()
+            return Response(professor_serializer.data, status=status.HTTP_200_OK)
+        return Response(professor_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #CHECK AGAIN HEREE
 
