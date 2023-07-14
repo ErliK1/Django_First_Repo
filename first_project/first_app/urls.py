@@ -11,5 +11,8 @@ urlpatterns = [
     path('professor/g/', views.ProfessorList.as_view()),
     path('professor/c/', views.ProfessorCreate.as_view()),
     path('professor/cb/', views.ProfessorCourseCreate.as_view()),
+    path('teacher/v/', views.TeacherShow.as_view()),
+    path('teacher/c/', views.TeacherCreate.as_view()),
+    path('teacher/cc/', views.TeacherStudentCreate.as_view()),
 
 ]

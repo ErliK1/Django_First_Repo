@@ -25,7 +25,13 @@ class Professor(models.Model):
     professor_name = models.CharField(max_length=200)
     professor_email = models.EmailField(max_length=100)
     professor_password = models.CharField(max_length=100)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course')
 
     def __str__(self):
         return str(self.professor_name)
+
+class Teacher(models.Model):
+    teacher_name = models.CharField(max_length=200)
+    teacher_password = models.CharField(max_length=200)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student')
+
