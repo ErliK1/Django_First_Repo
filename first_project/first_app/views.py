@@ -96,7 +96,7 @@ class TeacherStudentCreate(generics.CreateAPIView):
     #             student_serializer.save()
     #         else:
     #             return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #         teacher_model = Teacher(teacher_name=teacher_serializer.validated_data['teacher_name'],teacher_password=teacher_serializer.validated_data['teacher_password'], student=student_serializer.)
+    #         teacher_model = Teacher(teacher_name=teacher_serializer.validated_data['teacher_name'],teacher_password=teacher_serializer.validated_data['teacher_password'], student=student_serializer)
     #         print(teacher_serializer.validated_data)
     #         teacher_model.save()
     #         return Response(teacher_details.data, status=status.HTTP_200_OK)

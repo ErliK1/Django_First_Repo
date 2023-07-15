@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Student, Course, Professor, Teacher
+from first_app.models import Course, Student, Teacher, Professor
 
 class StudentSerializer(serializers.ModelSerializer):
 
@@ -66,7 +66,7 @@ class ProfessorCourseSerializerCreate(serializers.ModelSerializer):
     # def create(self):
 
 class TeacherSerializer(serializers.ModelSerializer):
-    #student = StudentSerializer()
+    student = StudentSerializer()
 
 
     class Meta:
@@ -80,17 +80,10 @@ class TeacherStudentSerializer(serializers.ModelSerializer):
         model = Teacher
         fields = '__all__'
 
-    # def create(self, validated_data):
-    #     student_detail = validated_data.pop('student')
-    #     self.student = StudentSerializer(data=student_detail)
-    #     if(self.student.is_valid()):
-    #         self.student.save()
-    #
-    #
-
-
-
-
-
-
-
+    def create(self, validated_data):
+        student_detail = validated_data.pop('student')
+        student = Student.objects.create(**student_detail)
+        student.save()
+        teacher = Teacher.objects.create(student=student, **validated_data)
+        teacher.save()
+        return teacher
