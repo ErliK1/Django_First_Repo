@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from first_app.models import Course, Student, Teacher, Professor
+from first_app.models import Course, Student, Teacher, Professor, StudentCourse
 
 class StudentSerializer(serializers.ModelSerializer):
 
@@ -9,7 +9,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class CourseSerializerGet(serializers.ModelSerializer):
 
-    student = StudentSerializer(many=True)
+    #student = StudentSerializer()
     class Meta:
         model = Course
         fields = '__all__'
@@ -31,7 +31,7 @@ class CourseSerializerCreate(serializers.ModelSerializer):
 
 class CourseSerializerRetrieve(serializers.ModelSerializer):
 
-    student = StudentSerializer(Student.objects.all(), many=True)
+    # student = StudentSerializer(Student.objects.all(), many=True)
     class Meta:
         model = Course
         fields = '__all__'
@@ -51,19 +51,24 @@ class ProfessorSerializerGet(serializers.ModelSerializer):
 
 class ProfessorSerializerCreate(serializers.ModelSerializer):
 
-    #course = CourseSerializerCreate
+    course = CourseSerializerGet()
     class Meta:
         model = Professor
         fields = '__all__'
 
 class ProfessorCourseSerializerCreate(serializers.ModelSerializer):
 
-    course = CourseSerializerGet()
+    course = CourseSerializerCreate()
     class Meta:
         model = Professor
         fields = '__all__'
 
-    # def create(self):
+    def create(self, validated_data):
+        course_data = validated_data.pop('course')
+        course = Course.objects.create(**course_data)
+        professor = Professor.objects.create(course=course, **validated_data)
+        return professor
+
 
 class TeacherSerializer(serializers.ModelSerializer):
     student = StudentSerializer()
@@ -87,3 +92,24 @@ class TeacherStudentSerializer(serializers.ModelSerializer):
         teacher = Teacher.objects.create(student=student, **validated_data)
         teacher.save()
         return teacher
+
+class CourseStudentCreate(serializers.ModelSerializer):
+
+    class Meta:
+        model = StudentCourse
+        fields = '__all__'
+
+class StudentCourseInitiallyCreate(serializers.ModelSerializer):
+    student = StudentSerializer()
+    course = CourseSerializerCreate()
+    class Meta:
+        model = StudentCourse
+        fields = '__all__'
+
+    def create(self, validated_data):
+        student_data = validated_data.pop('student')
+        student_model = Student.objects.create(**student_data)
+        course_data = validated_data.pop('course')
+        course_model = Course.objects.create(**course_data)
+        student_takes_course = StudentCourse.objects.create(student=student_model, course=course_model)
+        return student_takes_course

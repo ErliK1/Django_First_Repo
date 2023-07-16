@@ -14,12 +14,14 @@ class Student(models.Model):
 class Course(models.Model):
     course_id = models.AutoField(primary_key = True)
     course_name = models.CharField(max_length=200, default='Course')
-    student = models.ManyToManyField(Student)
+    # student = models.ManyToManyField(Student)
 
     def __str__(self):
         return str(self.course_name)
 
-
+class StudentCourse(models.Model):
+    student = models.OneToOneField(Student,on_delete=models.CASCADE)
+    course = models.OneToOneField(Course, on_delete=models.CASCADE)
 
 class Professor(models.Model):
     professor_name = models.CharField(max_length=200)
