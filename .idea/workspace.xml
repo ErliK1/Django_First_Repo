@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b9a39ed-da9d-48f5-99e9-23d4fb67bc7f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Django_First_Repo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Django_First_Repo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysite/the_site/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/the_site/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysite/the_site/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/the_site/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysite/the_site/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/the_site/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +83,7 @@
       <updated>1689590329263</updated>
       <workItem from="1689590334027" duration="153000" />
       <workItem from="1689590729894" duration="8000" />
-      <workItem from="1689590753117" duration="3109000" />
+      <workItem from="1689590753117" duration="7645000" />
     </task>
     <servers />
   </component>
