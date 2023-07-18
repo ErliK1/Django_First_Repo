@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Employee, Student
 from . import serializers
 from rest_framework import generics
-from .permisions import EmployeePermision, StudentEmployeePermission
+from .permisions import EmployeePermision, StudentEmployeePermission, StudentListPermission
 from rest_framework import permissions
 # Create your views here.
 
@@ -13,6 +13,7 @@ class EmployeeView(generics.ListAPIView):
 class StudentView(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = serializers.StudentSerializer
+    permission_classes = (StudentListPermission, )
 
 class StudentCreateView(generics.CreateAPIView):
     queryset = Student.objects.all()
@@ -21,6 +22,7 @@ class StudentCreateView(generics.CreateAPIView):
 class StudentRetrieveUpdate(generics.RetrieveUpdateAPIView):
     queryset = Student.objects.all()
     serializer_class = serializers.StudentSerializer
+    permission_classes = (StudentEmployeePermission,)
 
 class EmployeePermisionBasedView(generics.RetrieveAPIView):
     queryset = Employee.objects.all()
