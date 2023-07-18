@@ -4,6 +4,8 @@ from . import serializers
 from rest_framework import generics
 from .permisions import EmployeePermision, StudentEmployeePermission, StudentListPermission
 from rest_framework import permissions
+from django.contrib.auth.models import User
+
 # Create your views here.
 
 class EmployeeView(generics.ListAPIView):
@@ -14,6 +16,13 @@ class StudentView(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = serializers.StudentSerializer
     permission_classes = (StudentListPermission, )
+
+    def get_queryset(self):
+        user = User.objects.get(username=self.request.user)
+        employee = Employee.objects.get(user=user.id)
+        print(user)
+        return Student.objects.filter(employee=employee.id)
+
 
 class StudentCreateView(generics.CreateAPIView):
     queryset = Student.objects.all()

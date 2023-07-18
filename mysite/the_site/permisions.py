@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from .models import Employee
+from django.contrib.auth.models import User
 
 class EmployeePermision(permissions.BasePermission):
 
@@ -23,5 +24,7 @@ class StudentEmployeePermission(permissions.BasePermission):
 class StudentListPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        print(request.user)
+        user = User.objects.get(username=request.user)
+        employee = Employee.objects.get(user=user.id)
+
         return True
