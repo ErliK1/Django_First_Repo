@@ -9,5 +9,6 @@ urlpatterns = [
     path('employeeb/<int:pk>/', views.EmployeePermisionBasedView.as_view(), name='Permission Employee'),
     path('employee/<int:pk>/', views.StudentPermissionBasedView.as_view()),
     path('student/<int:pk>/', views.StudentRetrieveUpdate.as_view()),
+    path('student/employee', views.StudentEmployeeCreateView.as_view(), name='Create Employee and Student'),
 
 ]
